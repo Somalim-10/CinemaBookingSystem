@@ -1,0 +1,55 @@
+﻿@page
+@model CinemaBookingSystem.Pages.ShowTimes.IndexModel
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "🎬 Visninger";
+    var role = HttpContextAccessor.HttpContext?.Session.GetString("Role");
+}
+
+<h2 class="mb-4">🕒 Kommende Visninger</h2>
+
+@if (role == "Admin")
+{
+    <a asp-page="Create" class="btn btn-success mb-3">➕ Opret ny visning</a>
+}
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @foreach (var showtime in Model.Showtime)
+    {
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                @if (!string.IsNullOrEmpty(showtime.Movie.ImageUrl))
+                {
+                    <img src="@showtime.Movie.ImageUrl" class="card-img-top" alt="Filmplakat" style="height: 300px; object-fit: cover;">
+                }
+                else
+                {
+                    <div class="card-img-top d-flex align-items-center justify-content-center bg-secondary text-white" style="height: 300px;">
+                        <span>Ingen plakat</span>
+                    </div>
+                }
+
+                <div class="card-body">
+                    <h5 class="card-title">@showtime.Movie.Title</h5>
+                    <p class="card-text">
+                        <strong>Genre:</strong> @showtime.Movie.Genre<br />
+                        <strong>Starttid:</strong> @showtime.StartTime.ToString("dddd d. MMMM yyyy HH:mm")<br />
+                        <strong>Pris:</strong> @showtime.Price.ToString("0.00") kr
+                    </p>
+                </div>
+                <div class="card-footer bg-white border-top-0">
+                    @if (role == "Admin")
+                    {
+                        <a asp-page="./Edit" asp-route-id="@showtime.Id" class="btn btn-outline-primary btn-sm">✏️ Rediger</a>
+                        <a asp-page="./Delete" asp-route-id="@showtime.Id" class="btn btn-outline-danger btn-sm">🗑️ Slet</a>
+                    }
+                    else
+                    {
+                        <span class="text-muted small">Log ind som Admin for at ændre</span>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>

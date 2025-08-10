@@ -1,0 +1,52 @@
+﻿@page
+@model CinemaBookingSystem.Pages.ShowTimes.CreateModel
+@{
+    ViewData["Title"] = "Tilføj Visning";
+}
+
+<h2>🕒 Tilføj Visning</h2>
+
+<form method="post">
+    <div class="mb-3">
+        <label asp-for="Showtime.MovieId" class="form-label"></label>
+        <select asp-for="Showtime.MovieId" asp-items="Model.MovieOptions" class="form-select">
+            <option value="">-- Vælg en film --</option>
+        </select>
+        <span asp-validation-for="Showtime.MovieId" class="text-danger small"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="date" class="form-label">Dato</label>
+        <input type="date" id="date" name="date" class="form-control" required />
+    </div>
+    <div class="form-group mb-3">
+        <label for="time" class="form-label">Tidspunkt</label>
+        <input type="time" id="time" name="time" class="form-control" required />
+        <span asp-validation-for="Showtime.StartTime" class="text-danger small"></span>
+    </div>
+
+
+
+    <div class="mb-3">
+        <label asp-for="Showtime.Price" class="form-label"></label>
+        <input asp-for="Showtime.Price" id="priceInput" class="form-control" type="number" step="0.01" />
+        <span asp-validation-for="Showtime.Price" class="text-danger small"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success w-100">➕ Tilføj Visning</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        const priceInput = document.getElementById("priceInput");
+        if (priceInput) {
+            priceInput.addEventListener("focus", function () {
+                if (priceInput.value === "0" || priceInput.value === "0.00") {
+                    priceInput.value = "";
+                }
+            });
+        }
+    </script>
+}
+

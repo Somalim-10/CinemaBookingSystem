@@ -1,0 +1,42 @@
+﻿@page
+@model CinemaBookingSystem.Pages.Bookings.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Opret Booking</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Booking.Seats" class="control-label"></label>
+                <input asp-for="Booking.Seats" class="form-control" />
+                <span asp-validation-for="Booking.Seats" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Booking.ShowTimeId" class="control-label"></label>
+                <select asp-for="Booking.ShowTimeId" class="form-control"
+                        asp-items="Model.ShowtimeOptions"></select>
+                <span asp-validation-for="Booking.ShowTimeId" class="text-danger"></span>
+            </div>
+
+            <!-- Ingen UserName-felt, da det sættes automatisk -->
+
+            <div class="form-group mt-3">
+                <input type="submit" value="Book" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

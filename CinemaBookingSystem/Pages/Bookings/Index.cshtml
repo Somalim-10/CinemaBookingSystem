@@ -1,0 +1,59 @@
+﻿@page
+@model CinemaBookingSystem.Pages.Bookings.IndexModel
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "Dine Bookinger";
+}
+
+<h1 class="mb-4">Dine Bookinger</h1>
+
+<p>
+    <a class="btn btn-success" asp-page="Create">➕ Opret ny booking</a>
+</p>
+
+<table class="table table-bordered table-hover shadow-sm align-middle">
+    <thead class="table-dark">
+        <tr>
+            <th>🎬 Film</th>
+            <th>📅 Tidspunkt</th>
+            <th>🖼️ Plakat</th>
+            <th>🎟️ Antal Pladser</th>
+            <th>👤 Bruger</th>
+            <th>⚙️ Handling</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var booking in Model.Booking)
+        {
+            <tr>
+                <td class="fw-semibold">@booking.Showtime.Movie.Title</td>
+
+                <td>@booking.Showtime.StartTime.ToString("dd-MM-yyyy kl. HH:mm")</td>
+
+                <td>
+                    @if (!string.IsNullOrEmpty(booking.Showtime.Movie.ImageUrl))
+                    {
+                        <img src="@booking.Showtime.Movie.ImageUrl" alt="Plakat" width="80" height="120" style="object-fit: cover;" class="rounded" />
+                    }
+                    else
+                    {
+                        <span class="text-muted fst-italic">Ingen plakat</span>
+                    }
+                </td>
+
+                <td>
+                    <span class="badge bg-primary fs-6">@booking.Seats</span>
+                </td>
+
+                <td>@booking.UserName</td>
+
+                <td>
+                    <a class="btn btn-sm btn-outline-primary me-1" asp-page="./Edit" asp-route-id="@booking.Id">✏️ Rediger</a>
+                    <a class="btn btn-sm btn-outline-info me-1" asp-page="./Details" asp-route-id="@booking.Id">🔍 Detaljer</a>
+                    <a class="btn btn-sm btn-outline-danger" asp-page="./Delete" asp-route-id="@booking.Id">🗑️ Slet</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

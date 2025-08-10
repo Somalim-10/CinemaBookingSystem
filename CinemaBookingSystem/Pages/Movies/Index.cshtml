@@ -1,0 +1,63 @@
+﻿@page
+@model CinemaBookingSystem.Pages.Movies.IndexModel
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "Filmoversigt";
+    var role = HttpContextAccessor.HttpContext?.Session.GetString("Role");
+}
+
+<h1>🎬 Filmoversigt</h1>
+
+@if (role == "Admin")
+{
+    <p>
+        <a asp-page="Create" class="btn btn-success">➕ Opret ny film</a>
+    </p>
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Titel</th>
+            <th>Genre</th>
+            <th>Beskrivelse</th>
+            <th>Varighed</th>
+            <th>Plakat</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Movie)
+        {
+            <tr>
+                <td>@item.Title</td>
+                <td>@item.Genre</td>
+                <td>@item.Description</td>
+                <td>@item.DurationMinutes min</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.ImageUrl))
+                    {
+                        <img src="@item.ImageUrl" alt="Filmplakat" width="100" style="border-radius: 8px;" />
+                    }
+                    else
+                    {
+                        <span>Ingen plakat</span>
+                    }
+                </td>
+                <td>
+                    @if (role == "Admin")
+                    {
+                        <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">✏️ Rediger</a>
+                        <a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">🗑️ Slet</a>
+                    }
+                    else
+                    {
+                        <span class="text-muted">Kun visning</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

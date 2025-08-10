@@ -1,0 +1,26 @@
+﻿@page
+@model CinemaBookingSystem.Pages.LoginModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h2>🔐 Login</h2>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger">@Model.ErrorMessage</div>
+}
+
+<form method="post" class="w-50 mx-auto">
+    <div class="mb-3">
+        <label class="form-label">Brugernavn</label>
+        <input asp-for="Username" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Adgangskode</label>
+        <input asp-for="Password" type="password" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100">Log ind</button>
+</form>
